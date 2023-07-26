@@ -6,7 +6,7 @@
 /*   By: kluna-bo <kluna-bo@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:17:59 by kluna-bo          #+#    #+#             */
-/*   Updated: 2023/07/23 20:28:29 by kluna-bo         ###   ########.fr       */
+/*   Updated: 2023/07/23 22:00:54 by jrafols-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,30 @@ int	ft_atoi(char *str)
 	return (res);
 }
 
-unsigned int	ft_check_str_eq(char *str1, char *str2)
+char	*ft_str_trim(char *str)
 {
-	while (*str1 && *str2)
+	int	i;
+	int	j;
+	int	last_space;
+
+	i = 0;
+	j = 0;
+	last_space = 1;
+	while (str[i])
 	{
-		if (*str1 != *str2)
-			return (0);
+		if (str[i] != ' ' || !last_space)
+		{
+			str[j] = str[i];
+			j++;
+		}
+		if (str[i] == ' ')
+			last_space = 1;
+		else
+			last_space = 0;
+		i++;
 	}
-	return (1);
+	str[j] = '\0';
+	return (str);
 }
 
 unsigned int	ft_str_len(char *str)

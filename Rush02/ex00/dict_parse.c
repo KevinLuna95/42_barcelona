@@ -6,14 +6,15 @@
 /*   By: kluna-bo <kluna-bo@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 14:53:38 by kluna-bo          #+#    #+#             */
-/*   Updated: 2023/07/23 21:42:21 by jrafols-         ###   ########.fr       */
+/*   Updated: 2023/07/23 22:00:24 by jrafols-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+
+char	*ft_str_trim(char *str);
 
 struct s_numbers
 {
@@ -40,30 +41,19 @@ unsigned int	size_dict(char *dict_path)
 	return (size);
 }
 
-char	*ft_trim(char *str)
+int	ft_param_end(char str, int *status)
 {
-	int	i;
-	int	j;
-	int	last_space;
-
-	i = 0;
-	j = 0;
-	last_space = 1;
-	while (str[i])
+	if (str == ':')
 	{
-		if (str[i] != ' ' || !last_space)
-		{
-			str[j] = str[i];
-			j++;
-		}
-		if (str[i] == ' ')
-			last_space = 1;
-		else
-			last_space = 0;
-		i++;
+		*status = 2;
+		return (1);
 	}
-	str[j] = '\0';
-	return (str);
+	else if (str == '\n')
+	{
+		*status = 1;
+		return (1);
+	}
+	return (0);
 }
 
 char	*ft_read_param(int file, unsigned int *reading, int *status)
@@ -82,21 +72,13 @@ char	*ft_read_param(int file, unsigned int *reading, int *status)
 	while (*reading && i < 29)
 	{
 		*reading = read(file, &str, 1);
-		if (str == ':')
-		{
-			*status = 2;
+		if (ft_param_end(str, status))
 			break ;
-		}
-		else if (str == '\n')
-		{
-			*status = 1;
-			break ;
-		}
 		param[i] = str;
 		i++;
 	}
 	param[i + 1] = '\0';
-	return (ft_trim(param));
+	return (ft_str_trim(param));
 }
 
 // Stores a 2d Array in mdict provided a path to a .dict file

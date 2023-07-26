@@ -6,11 +6,12 @@
 /*   By: kluna-bo <kluna-bo@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 15:19:16 by kluna-bo          #+#    #+#             */
-/*   Updated: 2023/07/23 21:45:47 by jrafols-         ###   ########.fr       */
+/*   Updated: 2023/07/23 23:19:29 by jrafols-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <fcntl.h>
 
 struct s_numbers
 {
@@ -24,6 +25,7 @@ unsigned int	ft_atoi(char *str);
 unsigned int	ft_power(unsigned int n, unsigned int power);
 unsigned int	ft_spell_tens(unsigned int num, unsigned int size,
 					unsigned int index, struct s_numbers *dict);
+void			ft_write(char *str, int len);
 
 // Prunsigned ints the name of a number given it's key.
 // Returns 0 if the key is not in the loaded dict.
@@ -31,15 +33,17 @@ unsigned int	ft_num_name(unsigned int key, struct s_numbers *dict,
 					unsigned int size, unsigned int space)
 {
 	unsigned int	i;
+	int				file;
 
 	i = 0;
+	file = open("result_buffer.txt", O_CREAT | O_APPEND);
 	if (space)
-		write(1, " ", 1);
+		ft_write(" ", 1);
 	while (i < size)
 	{
 		if (key == ft_atoi(dict[i].key))
 		{
-			write(1, dict[i].value, ft_str_len(dict[i].value));
+			ft_write(dict[i].value, ft_str_len(dict[i].value));
 			return (1);
 		}
 		i++;
@@ -102,7 +106,7 @@ unsigned int	ft_spell_digit(unsigned int num, struct s_numbers *dict,
 	if (magnitude % 3 == 1)
 	{
 		if (!((num / ft_power(10, magnitude)) % 10) && index)
-			write(1, " and", 4);
+			ft_write(" and", 4);
 		return (ft_num_name(digit, dict, size, index));
 	}
 	if (magnitude % 3 == 2)
@@ -110,7 +114,7 @@ unsigned int	ft_spell_digit(unsigned int num, struct s_numbers *dict,
 	if (magnitude % 3 == 0)
 	{
 		if (index)
-			write(1, " ", 1);
+			ft_write(" ", 1);
 		ft_spell_digit(digit, dict, size, 0);
 		return (ft_num_name(100, dict, size, 1));
 	}
@@ -147,6 +151,6 @@ unsigned int	ft_spell(struct s_numbers *dict, unsigned int num,
 		magnitude -= advanced;
 		i++;
 	}
-	write(1, "\n", 1);
+	ft_write("\n", 1);
 	return (1);
 }
