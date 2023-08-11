@@ -1,4 +1,17 @@
-void check(int *res, char *str, int *count, int *c_sign)
+int num_in_base(char num, char *base)
+{
+    int count;
+
+    count = -1;
+    while (base[++count])
+        {
+            if(num == base[count])
+            return (count);
+        }
+        return (0);
+}
+
+void	check(int *res, char *str, int *count, int *c_sign)
 {
 	if (str[*count] != '+' && str[*count] != '-')
 		*res = -1;
@@ -9,92 +22,74 @@ void check(int *res, char *str, int *count, int *c_sign)
 	}
 	*count += 1;
 }
-int ft_recursive_power(int nb, int power)
-{
-	if (power == 0 && nb == 0)
-		return (1);
-	else if (power == 0)
-		return (0);
-	else if (power > 1)
-		return (nb * ft_recursive_power(nb, --power));
-	else
-		return (nb);
-}
 
-int ft_atoi(char *str)
+char	*ft_atoi(char *str, char *base, int *c_sign)
 {
-	int count;
-	int c_sign;
-	int res;
+	int	count;
+	int	res;
 
 	count = -1;
 	c_sign = 0;
 	res = 0;
-	while (str[++count] && str[count] != '-' && str[count] != '+' && !(str[count] >= '0' && str[count] <= '9'))
+	while (str[++count] && str[count] != '-' && str[count] != '+'
+		&& !(str[count] >= '0' && str[count] <= '9'))
 	{
 		if (!(str[count] >= 9 && str[count] <= 13) && str[count] != ' ')
 			res = -1;
 	}
-	while (str[count] && !(str[count] >= '0' && str[count] <= '9'))
-	{
+	while (str[count] && !(num_in_base(str[count], base)))
 		check(&res, str, &count, &c_sign);
-	}
 	if (res == -1)
 		return (0);
-	while (str[count] >= '0' && str[count] <= '9')
-		res = (res * 10) + (str[count++] - '0');
-	if (c_sign % 2)
-		res *= -1;
-	return (res);
+	return (str[count]);
 }
-
-int is_diferent(char *base, int size)
+/*
+a fucntion check if base, have more of 2 values and dosen't repit any char.
+RETURN If base is valid return the size, if is invalid return 0
+*/
+int check_base(char *base)
 {
+	int size;
 	int count;
-	int c_base;
+	int count2;
 
+	size = 0;
 	count = -1;
-	c_base = 0;
-	while (++count < size)
-	{
-		while (c_base < size)
-		{
-			if (base[count] == base[++c_base])
-				return (0);
-		}
-		c_base = 1 + count;
+	count2 = 0;
+	if (base[0])
+		return (0);
+	while (base[size]){
+		size++;
 	}
-	return (1);
-}
-
-void rec_nb(int num, char *base, int size)
-{
-	int mod;
-
-	mod = num % size;
-	num /= size;
-	if (num != 0)
-		rec_nb(num, base, size);
-	if (mod < 0)
-		mod *= -1;
-	write(1, &base[mod], 1);
-}
-
-void ft_putnbr_base(int nbr, char *base)
-{
-	int count;
-	char *res;
-
-	count = -1;
+	if (size < 2)
+		return (0);
 	while (base[++count])
 	{
-		if (base[count] == '+' || base[count] == '-')
-			return;
+		while (base[++count2] < size)
+		{
+			if (base[count] == base[count2])
+				return (0);
+		}
+		count2 = count;
 	}
-	if (count > 1 && is_diferent(base, count))
+	return (size);
+}
+
+char	*ft_strcat(char *dest, char *src, char *base)
+{
+	int	count_src;
+	int	count_dest;
+
+	count_src = 0;
+	count_dest = 0;
+	while (dest[count_dest] != '\0')
+		count_dest++;
+	while (src[count_src] != '\0' && num_in_base(src[count_src], base))
 	{
-		if (nbr < 0)
-			res[0] = '-';
-		rec_nb(nbr, base, count);
+		dest[count_dest] = src[count_src];
+		count_src++;
+		count_dest++;
 	}
+	dest[count_dest] = '\0';
+	return (dest);
 }
