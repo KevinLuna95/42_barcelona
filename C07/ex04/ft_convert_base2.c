@@ -1,17 +1,19 @@
+#include <stdio.h>
+
 int num_in_base(char num, char *base)
 {
-    int count;
+	int count;
 
-    count = -1;
-    while (base[++count])
-        {
-            if(num == base[count])
-            return (count);
-        }
-        return (0);
+	count = -1;
+	while (base[++count])
+	{
+		if (num == base[count])
+			return (count);
+	}
+	return (0);
 }
 
-void	check(int *res, char *str, int *count, int *c_sign)
+void check(int *res, char *str, int *count, int *c_sign)
 {
 	if (str[*count] != '+' && str[*count] != '-')
 		*res = -1;
@@ -23,25 +25,24 @@ void	check(int *res, char *str, int *count, int *c_sign)
 	*count += 1;
 }
 
-char	*ft_atoi(char *str, char *base, int *c_sign)
+char *ft_atoi(char *str, char *base, int *c_sign)
 {
-	int	count;
-	int	res;
+	int count;
+	int res;
 
 	count = -1;
 	c_sign = 0;
 	res = 0;
-	while (str[++count] && str[count] != '-' && str[count] != '+'
-		&& !(str[count] >= '0' && str[count] <= '9'))
+	while (str[++count] && str[count] != '-' && str[count] != '+' && !(str[count] >= '0' && str[count] <= '9'))
 	{
 		if (!(str[count] >= 9 && str[count] <= 13) && str[count] != ' ')
 			res = -1;
 	}
 	while (str[count] && !(num_in_base(str[count], base)))
-		check(&res, str, &count, &c_sign);
+		check(&res, str, &count, c_sign);
 	if (res == -1)
 		return (0);
-	return (str[count]);
+	return (&str[count]);
 }
 /*
 a fucntion check if base, have more of 2 values and dosen't repit any char.
@@ -56,11 +57,12 @@ int check_base(char *base)
 	size = 0;
 	count = -1;
 	count2 = 0;
-	if (base[0])
-		return (0);
-	while (base[size]){
+	while (base[size])
+	{
+		printf("%c", base[size]);
 		size++;
 	}
+	printf("\n");
 	if (size < 2)
 		return (0);
 	while (base[++count])
@@ -75,10 +77,10 @@ int check_base(char *base)
 	return (size);
 }
 
-char	*ft_strcat(char *dest, char *src, char *base)
+char *ft_strcat(char *dest, char *src, char *base)
 {
-	int	count_src;
-	int	count_dest;
+	int count_src;
+	int count_dest;
 
 	count_src = 0;
 	count_dest = 0;
