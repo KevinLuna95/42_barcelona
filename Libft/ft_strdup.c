@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kluna-bo <kluna-bo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/17 12:24:56 by kluna-bo          #+#    #+#             */
-/*   Updated: 2023/09/23 17:33:16 by kluna-bo         ###   ########.fr       */
+/*   Created: 2023/09/17 11:19:47 by kluna-bo          #+#    #+#             */
+/*   Updated: 2023/09/25 14:02:36 by kluna-bo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include <libc.h>
+#include <stdio.h>
 
-size_t	ft_strlen(const char *s)
+char	*ft_strdup(const char *s1)
 {
-	size_t	c;
+	int		c;
+	char	*res;
 
 	c = 0;
-	while (s[c])
+	while (s1[c])
 		c++;
-	return (c);
+	res = (char *)malloc((++c) * sizeof(char));
+	if (!res)
+		return (NULL);
+	while (c--)
+		res[c] = s1[c];
+	return (res);
 }
-
-/*int main(void)
+/*
+int	main(void)
 {
-	printf("%d \n", ft_strlen("hola"));
-}*/
+	char *str = "Hola soy Kevin";
+	char *str2 = ft_strdup(str);
+
+	printf("%s, %s\n", str, str2);
+	free(str2);
+}
+*/

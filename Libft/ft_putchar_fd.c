@@ -1,15 +1,29 @@
-#include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kluna-bo <kluna-bo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/23 14:04:12 by kluna-bo          #+#    #+#             */
+/*   Updated: 2023/09/23 14:04:12 by kluna-bo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <fcntl.h>
-void ft_putchar_fd(char c, int fd)
+#include <unistd.h>
+
+void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
-
-int main(void)
+/*
+int	main(void)
 {
-	int file = open("file.txt", O_WRONLY);
+	int	file = open("file.txt", O_WRONLY);
 	if (!file)
 		return (0);
 	ft_putchar_fd('a', file);
 	return (0);
 }
+*/

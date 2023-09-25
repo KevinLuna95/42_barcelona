@@ -1,12 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kluna-bo <kluna-bo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/23 11:21:08 by kluna-bo          #+#    #+#             */
+/*   Updated: 2023/09/23 11:21:08 by kluna-bo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-/*TODO Atencion, estoy usando unas funciones de c, he de añadirle el ft_*/
-/*TODO Por algun motivo no funciona el free, HELP*/
+#include "libft.h"
 
-int isinset(char c, char const *set)
+size_t	ft_strlen(const char *s);
+
+size_t	ft_strlen(const char *s)
 {
-	int count;
+	size_t	c;
+
+	c = 0;
+	while (s[c])
+		c++;
+	return (c);
+}
+
+int	isinset(char c, char const *set)
+{
+	int	count;
 
 	count = -1;
 	while (set[++count])
@@ -17,37 +40,35 @@ int isinset(char c, char const *set)
 	return (0);
 }
 
-char *ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-	int size;
-	int c;
-	char *res;
-	int tmp;
+	int		size;
+	int		c;
 
-	size = strlen(s1) - 1;
+	if (!set || !s1)
+		return (NULL);
+	size = ft_strlen(s1) - 1;
 	c = 0;
 	while (isinset(s1[c], set))
 		c++;
 	while (isinset(s1[size], set))
 		size--;
-	res = (char *)malloc((size - c + 1) * sizeof(char));
-	if (!res)
-		return (NULL);
-	tmp = 0;
-	while (c <= size)
-		res[tmp++] = s1[c++];
-	res[tmp] = '\0';
-	return (res);
+	if (size < c)
+		return (ft_substr("", 0, 1));
+	return (ft_substr(s1, c, (size - c +1)));
 }
-
-int main(void)
+/*
+int	main(void)
 {
-	char *str = "Hola soy kevin";
-	char *strres;
+	char *s1 = "  \t \t \n   \n\n\n\t";
+ 	char *s2 = "";
+ 	char *ret = ft_strtrim(s1, " \n\t");
 
-	printf("str: %s|\n", str);
-	strres = ft_strtrim(str, "+- ");
-	printf("str: %s|\n", strres);
-	free(strres);
+ 	if (!strcmp(ret, s2))
+ 		printf("OK");
+	else
+ 		printf("MAL");
+
 	return (0);
 }
+*/

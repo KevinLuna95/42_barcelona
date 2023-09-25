@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kluna-bo <kluna-bo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/17 12:24:56 by kluna-bo          #+#    #+#             */
-/*   Updated: 2023/09/23 17:33:16 by kluna-bo         ###   ########.fr       */
+/*   Created: 2023/09/13 16:45:36 by kluna-bo          #+#    #+#             */
+/*   Updated: 2023/09/24 17:10:01 by kluna-bo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include <stdio.h>
 
-size_t	ft_strlen(const char *s)
+int	ft_toupper(int c)
 {
-	size_t	c;
-
-	c = 0;
-	while (s[c])
-		c++;
+	if (c >= 'a' && c <= 'z')
+		c -= 32;
 	return (c);
 }
-
-/*int main(void)
+/*
+int	main(void)
 {
-	printf("%d \n", ft_strlen("hola"));
-}*/
+	printf("%c\n", ft_toupper('a'));
+	printf("%c\n", ft_toupper('z'));
+	printf("%c\n", ft_toupper('D'));
+	printf("%c\n", ft_toupper('8'));
+	printf("%c\n", ft_toupper(' '));
+	return (0);
+}
+*/

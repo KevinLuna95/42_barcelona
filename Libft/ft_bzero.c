@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kluna-bo <kluna-bo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/17 12:24:56 by kluna-bo          #+#    #+#             */
-/*   Updated: 2023/09/23 17:33:16 by kluna-bo         ###   ########.fr       */
+/*   Created: 2023/09/12 08:25:22 by kluna-bo          #+#    #+#             */
+/*   Updated: 2023/09/23 20:28:14 by kluna-bo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdio.h>
 
-size_t	ft_strlen(const char *s)
+void	ft_bzero(void *s, size_t n)
 {
+	char	*dest;
 	size_t	c;
 
+	dest = (char *)s;
 	c = 0;
-	while (s[c])
-		c++;
-	return (c);
+	while (c < n)
+		dest[c++] = 0;
 }
-
-/*int main(void)
+/*
+int main(void)
 {
-	printf("%d \n", ft_strlen("hola"));
-}*/
+	char str[10];
+
+	ft_bzero(str,5);
+	printf("|%i|",str[4]);
+}
+*/

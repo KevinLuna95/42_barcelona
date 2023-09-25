@@ -1,10 +1,25 @@
-typedef unsigned int size_t;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kluna-bo <kluna-bo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/23 10:03:36 by kluna-bo          #+#    #+#             */
+/*   Updated: 2023/09/23 10:03:36 by kluna-bo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void *ft_memset(void *str, int c, size_t n)
+#include <unistd.h>
+
+void	*ft_memset(void *b, int c, size_t n)
 {
-	char *c_str = (char *)str;
+	char	*c_str;
+
+	c_str = (char *)b;
 	while (n)
 		c_str[--n] = c;
+	return (b);
 }
 /*
 int main(void)
