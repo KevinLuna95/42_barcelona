@@ -12,7 +12,15 @@
 
 #ifndef LIBFT_H
 # define LIBFT_H
-# include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <semaphore.h>
+#include <pthread.h>
+#include <netdb.h>
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
 # include "get_next_line.h"
 
 typedef struct s_list

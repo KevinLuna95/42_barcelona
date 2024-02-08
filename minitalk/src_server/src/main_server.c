@@ -24,25 +24,32 @@ void	extra_len(int (*iter)[3], int sig, long *size, char **str)
 	if ((*iter)[0] == 32)
 	{
 		(*iter)[0] = 0;
+		(*iter)[1] = 0;
 		(*iter)[2] = 0;
-		*str = (char *)malloc(*size * sizeof(char));
+		*str = (char *)ft_calloc((*size + 1), sizeof(char));
+		if (*str == NULL)
+			ft_printf("Error\n"), exit(0);
 	}
 }
 
-void    extra_char(int (*iter)[3], int sig, unsigned char *ch, char **str, long *pos)
+void	restart(int (*iter)[3], char *ch, long *size, long *pos)
 {
-    printf("%ld\n", *pos);
-    *ch <<= 1;
-    if (sig == SIGUSR1)
-        *ch |= 1;
-    (*iter)[0]++;
-    if ((*iter)[0] == 8)
-    {
-        *str[*pos] = *ch;
-        *pos += 1;
-        (*iter)[0] = 0;
-        *ch = '\0';
-    }
+		*size = 0;
+		*ch = '\0';
+		*iter[0] = 0;
+		*iter[1] = 0;
+		*iter[2] = 1;
+		*pos = 0;
+}
+
+clean_str(char **str)
+{
+	int i;
+
+	i = 0;
+
+	while(str[i])
+		str[i++] = 0;
 }
 
 static void	handler(int sig)
@@ -54,10 +61,15 @@ static void	handler(int sig)
 	static long				pos = 0;
 
 	if (iter[2])
+	{
+
 		extra_len(&iter, sig, &size, &str);
+		printf("en primer if: vars: iter[0] = %i, iter[1] = %i, iter[2] = %i, size = %ld, pos= %ld, ch= |%c|\n",iter[0], iter[1], iter[2], size, pos, ch);
+	}
 	else
 	{
-		// printf("%ld\n", size);
+		printf("en else: vars: iter[0] = %i, iter[1] = %i, iter[2] = %i, size = %ld, pos= %ld, ch= |%c|\n",iter[0], iter[1], iter[2], size, pos, ch);
+
 		ch <<= 1;
 		if (sig == SIGUSR1)
 			ch |= 1;
@@ -71,12 +83,11 @@ static void	handler(int sig)
 	}
 	if (pos == size && size)
 	{
-		ft_printf("%s", str);
+		printf("en ultimo if: vars: iter[0] = %i, iter[1] = %i, iter[2] = %i, size = %ld, pos= %ld, ch= |%c|\n",iter[0], iter[1], iter[2], size, pos, ch);
 		size = 0;
-		ch = '\0';
-		iter[1] = 0;
-		iter[2] = 1;
-		pos = 0;
+		restart(&iter, &ch, &size, &pos), ft_printf("%s\n", str);
+		//printf("vars: iter[0] = %i, iter[1] = %i, iter[2] = %i, size = %ld, pos= %ld, ch= |%c|\n",iter[0], iter[1], iter[2], size, pos, ch);
+
 	}
 }
 

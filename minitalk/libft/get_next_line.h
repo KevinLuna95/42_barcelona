@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 # include <fcntl.h>
 # include <stdio.h>
-# include <libc.h>
+//# include <libc.h>
 # include "libft.h"
 
 # ifndef BUFFER_SIZE
