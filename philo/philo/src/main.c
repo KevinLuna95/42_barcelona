@@ -131,11 +131,6 @@ int	init_rules(t_rules *rules, char *argv[])
 
 void	time_to_eat(t_philosopher *philo)
 {
-	t_rules	*rules;
-
-	rules = philo->rules;
-	// if (philo->x_ate <= philo->rules->nb_eat)
-	// {
 	pthread_mutex_lock(&philo->rules->forks[philo->left_fork_id]);
 	ft_print(philo, FORKING" left");
 	pthread_mutex_lock(&philo->rules->forks[philo->right_fork_id]);
@@ -144,21 +139,17 @@ void	time_to_eat(t_philosopher *philo)
 	ft_print(philo, EATING);
 	waiting(philo->rules->time_eat, philo->rules);
 	pthread_mutex_unlock(&philo->rules->forks[philo->left_fork_id]);
-		ft_print(philo, "SOLTANDO TENEDOR");
 	pthread_mutex_unlock(&philo->rules->forks[philo->right_fork_id]);
-		ft_print(philo, "SOLTANDO TENEDOR");
-	// }
 }
 
 void	doing(t_philosopher *philo)
 {
 	if (philo->id % 2)
-		usleep(100);
+		usleep(15000);
 	while(!philo->rules->dieded)
 	{
-	time_to_eat(philo);
+		time_to_eat(philo);
 	}
-	// ft_print(philo, DIEING);
 }
 
 
