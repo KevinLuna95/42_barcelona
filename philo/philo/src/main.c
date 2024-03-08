@@ -133,13 +133,58 @@ void	time_to_eat(t_philosopher *philo)
 {
 	pthread_mutex_lock(&philo->rules->forks[philo->left_fork_id]);
 	ft_print(philo, FORKING" left");
-	pthread_mutex_lock(&philo->rules->forks[philo->right_fork_id]);
-	ft_print(philo, FORKING" right");
-	philo->t_last_meal = ft_get_time() - philo->rules->first_timestamp;
-	ft_print(philo, EATING);
-	waiting(philo->rules->time_eat, philo->rules);
+	if (philo->rules->nb_philos != 1)
+	{
+		pthread_mutex_lock(&philo->rules->forks[philo->right_fork_id]);
+		ft_print(philo, FORKING" right");
+		philo->t_last_meal = ft_get_time() - philo->rules->first_timestamp;
+		philo->x_ate++;
+		ft_print(philo, EATING);
+		waiting(philo->rules->time_eat, philo->rules);
+		pthread_mutex_unlock(&philo->rules->forks[philo->right_fork_id]);
+	}
+	else
+		waiting(philo->rules->time_death, philo->rules);
 	pthread_mutex_unlock(&philo->rules->forks[philo->left_fork_id]);
-	pthread_mutex_unlock(&philo->rules->forks[philo->right_fork_id]);
+}
+
+void	check_life(t_philosopher *philo)
+{
+	int i;
+	t_rules *rules;
+
+	i = 0;
+	rules = (philo->rules);
+	//ft_print(philo, "que hay en tiempo");
+	pthread_mutex_lock(&rules->meal_check);
+	if (rules->time_death < (ft_get_time() - rules->first_timestamp) - philo->t_last_meal)
+	{
+		philo->rules->dieded = 1;
+		ft_print(philo, DIEING);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		while (i < philo->rules->nb_philos)
+		{
+			//i no está sumando.
+			//printf("xate= %i, all_ate = %i\n", rules.philosophers[i].x_ate, rules.all_ate);
+			if (rules->philosophers[i].x_ate > rules->all_ate)
+				i++;
+			else
+				break;
+		}
+		//rintf("i= %i, n philos =%i\n",i, rules->nb_philos);
+		if (i == rules->nb_philos)
+		{
+			philo->rules->all_ate++;
+			//printf("HOLLLLSASKDNAKN\n");
+		}
+		//printf("all ate= %i, nb eat =%i\n",rules->all_ate, rules->nb_eat);
+		if (rules->all_ate == rules->nb_eat)
+			rules->dieded = 1;
+	}
+	pthread_mutex_unlock(&rules->meal_check);
 }
 
 void	doing(t_philosopher *philo)
@@ -148,7 +193,17 @@ void	doing(t_philosopher *philo)
 		usleep(15000);
 	while(!philo->rules->dieded)
 	{
-		time_to_eat(philo);
+		if (philo->x_ate <= philo->rules->all_ate)
+		{
+			time_to_eat(philo);
+			if (philo->rules->nb_philos != 1)
+			{
+				ft_print(philo, SLEEPING);
+				waiting(philo->rules->time_sleep, philo->rules);
+				ft_print(philo, THINKING);
+			}
+		}
+		check_life(philo);
 	}
 }
 
@@ -177,13 +232,13 @@ int	main(int argc, char *argv[])
 		write(2, "Error: wrong input\n", 19);
 	else
 	{
-		if (ft_atoi(argv[1]) > 2 && ft_atoi(argv[1]) < 250)
+		if (ft_atoi(argv[1]) < 250)
 		{
 			if (!init_rules(&rules, argv))
 				return (write(2, "Error\n", 6), 1);
 		}
 		else
-			return (write(2, "Error: - 2 o + 250 philos NEIN\n", 31), 1);
+			return (write(2, "Error: + 250 philos NEIN\n", 25), 1);
 		if (!philosophers(&rules, -1, (&rules)->philosophers))
 			return (1);
 	}
