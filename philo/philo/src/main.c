@@ -99,6 +99,7 @@ void	init_philos(t_rules *rules)
 void	ft_print(t_philosopher *philo, char *action)
 {
 	pthread_mutex_lock(&philo->rules->writing);
+	if (!philo->rules->dieded)
 	printf("Tiempo: %lldms, Philosofo: %d -> %s\n", \
 		ft_get_time() - philo->rules->first_timestamp, philo->id, action);
 	pthread_mutex_unlock(&philo->rules->writing);
@@ -147,7 +148,7 @@ void	time_to_eat(t_philosopher *philo)
 		waiting(philo->rules->time_death, philo->rules);
 	pthread_mutex_unlock(&philo->rules->forks[philo->left_fork_id]);
 }
-
+//muere pero creo que no debería.
 void	check_life(t_philosopher *philo)
 {
 	int i;
@@ -155,32 +156,25 @@ void	check_life(t_philosopher *philo)
 
 	i = 0;
 	rules = (philo->rules);
-	//ft_print(philo, "que hay en tiempo");
 	pthread_mutex_lock(&rules->meal_check);
 	if (rules->time_death < (ft_get_time() - rules->first_timestamp) - philo->t_last_meal)
 	{
 		philo->rules->dieded = 1;
-		ft_print(philo, DIEING);
+		printf("Tiempo: %lldms, Philosofo: %d -> %s\n", \
+		ft_get_time() - philo->rules->first_timestamp, philo->id, DIEING);
 		exit(EXIT_SUCCESS);
 	}
 	else
 	{
 		while (i < philo->rules->nb_philos)
 		{
-			//i no está sumando.
-			//printf("xate= %i, all_ate = %i\n", rules.philosophers[i].x_ate, rules.all_ate);
 			if (rules->philosophers[i].x_ate > rules->all_ate)
 				i++;
 			else
 				break;
 		}
-		//rintf("i= %i, n philos =%i\n",i, rules->nb_philos);
 		if (i == rules->nb_philos)
-		{
 			philo->rules->all_ate++;
-			//printf("HOLLLLSASKDNAKN\n");
-		}
-		//printf("all ate= %i, nb eat =%i\n",rules->all_ate, rules->nb_eat);
 		if (rules->all_ate == rules->nb_eat)
 			rules->dieded = 1;
 	}
