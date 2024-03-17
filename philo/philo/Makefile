@@ -1,22 +1,21 @@
 NAME 			= philo
 CC 				= cc
-CFLAGS 			= -Wall -Wextra -Werror -pthread
+CFLAGS 			= -Wall -Wextra -Werror -pthread #-fsanitize=thread -g
 
-SOURCES 		= main.c ft_atoi.c
-SOURCES_PATH	= ./src
+SOURCES 		= main.c init-check_input.c time-print.c getters.c setters.c checkers_helpers.c
 OBJS_PATH		= ./build
-HEADER			= $(SOURCES_PATH)/philo.h
+HEADER			= philo.h
 
-all: $(NAME) 
+all: $(NAME)
 
 OBJS = $(addprefix $(OBJS_PATH)/, ${SOURCES:.c=.o})
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $(NAME)
+	$(CC) $(CFLAGS) $^ -o $@
 
-$(OBJS_PATH)/%.o: $(SOURCES_PATH)/%.c $(HEADER) Makefile
-			mkdir -p $(dir $@)
-			$(CC) $(CFLAGS) -c $< -o $@ 
+$(OBJS_PATH)/%.o: %.c $(HEADER) Makefile
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 clean:
 	rm -rf $(OBJS_PATH)
@@ -26,4 +25,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:		all clean fclean re
+.PHONY: all clean fclean re
