@@ -17,7 +17,7 @@ long long	ft_get_time(void)
 	struct timeval	t;
 
 	gettimeofday(&t, NULL);
-	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+	return ((t.tv_sec * 1000) + (t.tv_usec * 0.001));
 }
 
 long long	time_diff(long long past, long long pres)
@@ -25,7 +25,7 @@ long long	time_diff(long long past, long long pres)
 	return (pres - past);
 }
 
-void	waiting(long long time, t_philosopher *philo)
+void	waiting(long long time)
 {
 	long long	i;
 
@@ -36,8 +36,6 @@ void	waiting(long long time, t_philosopher *philo)
 			break ;
 		usleep(50);
 	}
-	if (philo)
-		i = 0;
 }
 
 void	ft_print(t_philosopher *philo, char *action)
@@ -54,12 +52,8 @@ void	whatcher(t_rules *rules)
 	while (1)
 	{
 		if (!check_life(rules))
-		{
 			break ;
-		}
-		//if (get_all_ate(rules) == rules->nb_eat)
-		//set_dieded(rules, 1);
 		check_all_eats(rules);
-		usleep(8000);
+		usleep(5000);
 	}
 }

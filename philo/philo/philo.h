@@ -82,7 +82,7 @@ int			destroy_forks(t_rules *rules);
 /*File: time-print.c*/
 long long	ft_get_time(void);
 long long	time_diff(long long past, long long pres);
-void		waiting(long long time, t_philosopher *philo);
+void		waiting(long long time);
 void		ft_print(t_philosopher *philo, char *action);
 void		whatcher(t_rules *rules);
 

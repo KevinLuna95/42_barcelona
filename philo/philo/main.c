@@ -23,22 +23,23 @@ void	time_to_eat(t_philosopher *philo)
 	set_t_last_meal(philo, ft_get_time() - philo->rules->first_timestamp);
 	ft_print(philo, EATING);
 	set_x_ate(philo, 1);
-	waiting(philo->rules->time_eat, philo);
+	waiting(philo->rules->time_eat);
 	pthread_mutex_unlock(&philo->rules->forks[philo->left_fork_id]);
 	pthread_mutex_unlock(&philo->rules->forks[philo->right_fork_id]);
 }
 
 void	doing(t_philosopher *philo)
 {
+	pthread_mutex_lock(&philo->rules->m_dieded);
+	pthread_mutex_unlock(&philo->rules->m_dieded);
 	if (philo->id % 2)
 		usleep(15000);
 	while (!get_dieded(philo->rules))
 	{
 		time_to_eat(philo);
 		ft_print(philo, SLEEPING);
-		waiting(philo->rules->time_sleep, philo);
+		waiting(philo->rules->time_sleep);
 		ft_print(philo, THINKING);
-		//check_all_eats(philo->rules);
 	}
 }
 
@@ -51,21 +52,23 @@ void	one_philo(t_philosopher *philo)
 
 int	philosophers(t_rules *rules, int i, t_philosopher *philo)
 {
-	rules->first_timestamp = ft_get_time();
 	if (rules->nb_philos == 1)
 	{
+		philo->rules->first_timestamp = ft_get_time();
 		pthread_create(&(philo[0].thread_id), NULL, \
 						(void *)one_philo, &philo[0]);
-		pthread_create(&(rules->seeker), \
-							NULL, (void *)whatcher, rules);
+		pthread_create(&(rules->seeker), NULL, (void *)whatcher, rules);
 		pthread_join(rules->seeker, NULL);
 		pthread_join(philo[0].thread_id, NULL);
 	}
 	else
 	{
+		pthread_mutex_lock(&rules->m_dieded);
 		while (++i < rules->nb_philos)
 			pthread_create(&(philo[i].thread_id), \
 							NULL, (void *)doing, &philo[i]);
+		rules->first_timestamp = ft_get_time();
+		pthread_mutex_unlock(&rules->m_dieded);
 		pthread_create(&(rules->seeker), \
 							NULL, (void *)whatcher, rules);
 		while (--i >= 0)

@@ -24,8 +24,8 @@ void	check_all_eats(t_rules *rules)
 	}
 	if (i == rules->nb_philos)
 		set_all_ate(rules, 1);
-	//if (get_all_ate(rules) == rules->nb_eat + 1)
-	//	set_dieded(rules, 1);
+	if (get_all_ate(rules) == rules->nb_eat + 1)
+		set_dieded(rules, 1);
 }
 
 int	check_life(t_rules *rules)
