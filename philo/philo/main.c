@@ -38,7 +38,7 @@ void	doing(t_philosopher *philo)
 		ft_print(philo, SLEEPING);
 		waiting(philo->rules->time_sleep, philo);
 		ft_print(philo, THINKING);
-		check_all_eats(philo->rules);
+		//check_all_eats(philo->rules);
 	}
 }
 

@@ -57,6 +57,9 @@ void	whatcher(t_rules *rules)
 		{
 			break ;
 		}
-		usleep(500);
+		//if (get_all_ate(rules) == rules->nb_eat)
+		//set_dieded(rules, 1);
+		check_all_eats(rules);
+		usleep(8000);
 	}
 }
